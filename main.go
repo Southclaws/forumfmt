@@ -75,6 +75,8 @@ func process(input *bytes.Reader, output io.Writer) (err error) {
 			fmt.Fprint(output, strings.Replace(getText(node), "\n", " ", -1))
 		} else if scrape.ByTag(atom.Ul)(node) {
 			fmt.Fprintf(output, "[LIST]\n"+getText(node)+"\n[/LIST]")
+		} else if scrape.ByTag(atom.Blockquote)(node) {
+			fmt.Fprintf(output, "[QUOTE]\n"+getText(node)+"\n[/QUOTE]")
 		} else if scrape.ByTag(atom.Pre)(node) {
 			fmt.Fprintf(output, getText(node))
 		}
@@ -101,16 +103,22 @@ func getText(node *html.Node) string {
 			text := getText(inner)
 
 			if inner.Data == "code" {
-				if attrIs(inner, "class", "language-json") {
-					begin = "[PHP]\n"
-					end = "[/PHP]"
-				} else if attrIs(inner, "class", "language-pawn") {
-					begin = `[code][FONT="courier new"]` + "\n"
-					text = syntax(text)
-					end = "[/FONT][/code]"
+				if hasAttr(inner, "class") {
+					if attrIs(inner, "class", "language-json") {
+						begin = "[PHP]\n"
+						end = "[/PHP]"
+					} else if attrIs(inner, "class", "language-pawn") {
+						begin = `[code][FONT="courier new"]` + "\n"
+						text = syntax(text)
+						end = "[/FONT][/code]"
+					} else {
+						begin = "[CODE]\n"
+						end = "[/CODE]"
+					}
 				} else {
 					begin = `[FONT="courier new"]`
 					end = `[/FONT]`
+
 				}
 			} else if inner.Data == "em" {
 				begin = `[i]`
@@ -133,6 +141,8 @@ func getText(node *html.Node) string {
 					end = "[/IMG]"
 					text = src
 				}
+			} else if inner.Data == "p" {
+				//nolint
 			} else {
 				begin = "[UNHANDLED-TAG=" + inner.Data + "]"
 				end = "[/UNHANDLED-TAG=" + inner.Data + "]"
