@@ -25,9 +25,9 @@ Server management and configuration tools:
 
 becomes this:
 
+```json
 The Swiss Army Knife of SA:MP - vital tools for any server owner or library maintainer.
 
-```json
 [COLOR="RoyalBlue"][size="6"][B]Overview[/B][/size][/COLOR]
 
 Server management and configuration tools:
