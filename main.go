@@ -121,7 +121,7 @@ func getText(node *html.Node) string {
 						end = "[/PHP]"
 					} else if attrIs(inner, "class", "language-pawn") {
 						begin = `[code][FONT="courier new"]` + "\n"
-						text = syntax(text)
+						text = syntax(strings.TrimSpace(text))
 						end = "[/FONT][/code]"
 					} else {
 						begin = "[CODE]\n"
