@@ -18,34 +18,46 @@ import (
 
 func main() {
 	var (
-		input []byte
-		err   error
+		input      *os.File
+		output     *os.File
+		outputFile string
+		err        error
 	)
 
 	flag.Parse()
 	switch flag.NArg() {
 	case 0:
-		input, err = ioutil.ReadAll(os.Stdin)
+		input = os.Stdin
+	case 1, 2:
+		input, err = os.Open(flag.Arg(0))
 		if err != nil {
-			panic(err)
+			fmt.Println("failed to open input file:", err)
 		}
-	case 1:
-		input, err = ioutil.ReadFile(flag.Arg(0))
-		if err != nil {
-			panic(err)
-		}
+		outputFile = flag.Arg(1)
 	default:
 		fmt.Printf("input must be from stdin or file\n")
 		os.Exit(1)
 	}
 
-	err = process(bytes.NewReader(input), os.Stdout)
+	if outputFile == "" {
+		output = os.Stdout
+	} else {
+		output, err = os.Create(outputFile)
+		defer func() {
+			err = output.Close()
+			if err != nil {
+				fmt.Println("failed to close output file:", err)
+			}
+		}()
+	}
+
+	err = process(input, output)
 	if err != nil {
-		println(err)
+		fmt.Println("failed to process input:", err)
 	}
 }
 
-func process(input *bytes.Reader, output io.Writer) (err error) {
+func process(input io.Reader, output io.Writer) (err error) {
 	contents, err := ioutil.ReadAll(input)
 	if err != nil {
 		return
@@ -96,7 +108,7 @@ func getText(node *html.Node) string {
 	buf := bytes.Buffer{}
 	forChildren(node, func(inner *html.Node) {
 		if inner.Type == html.TextNode {
-			buf.WriteString(inner.Data)
+			buf.WriteString(strings.TrimSpace(inner.Data))
 		} else if inner.Type == html.ElementNode {
 			begin := ""
 			end := ""
