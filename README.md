@@ -11,8 +11,7 @@ This tool means you can simply have a single markdown readme file in your projec
 For example, this:
 
 ```markdown
-The Swiss Army Knife of SA:MP - vital tools for any server owner or library
-maintainer.
+The Swiss Army Knife of SA:MP - vital tools for any server owner or library maintainer.
 
 ## Overview
 
@@ -35,7 +34,9 @@ Server management and configuration tools:
 [LIST]
 
 [*]Manage your server settings in JSON format (compiles to server.cfg)
+
 [*]Run the server from [FONT="courier new"]sampctl[/FONT] and let it worry about automatic restarts
+
 [*]Automatically download Windows/Linux server binaries when you need them
 
 [/LIST]

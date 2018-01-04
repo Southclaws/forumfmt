@@ -42,7 +42,7 @@ func main() {
 	if outputFile == "" {
 		output = os.Stdout
 	} else {
-		output, err = os.Create(outputFile)
+		output, err = os.OpenFile(outputFile, os.O_WRONLY, 0666)
 		defer func() {
 			err = output.Close()
 			if err != nil {
@@ -108,7 +108,7 @@ func getText(node *html.Node) string {
 	buf := bytes.Buffer{}
 	forChildren(node, func(inner *html.Node) {
 		if inner.Type == html.TextNode {
-			buf.WriteString(strings.TrimSpace(inner.Data))
+			buf.WriteString(inner.Data)
 		} else if inner.Type == html.ElementNode {
 			begin := ""
 			end := ""
@@ -121,7 +121,7 @@ func getText(node *html.Node) string {
 						end = "[/PHP]"
 					} else if attrIs(inner, "class", "language-pawn") {
 						begin = `[code][FONT="courier new"]` + "\n"
-						text = syntax(text)
+						text = syntax(strings.TrimSpace(text))
 						end = "[/FONT][/code]"
 					} else {
 						begin = "[CODE]\n"
@@ -140,6 +140,7 @@ func getText(node *html.Node) string {
 				end = `[/b]`
 			} else if inner.Data == "li" {
 				begin = "[*]"
+				end = "\n"
 			} else if inner.Data == "a" {
 				href := getAttr(inner, "href")
 				if href != "" {
