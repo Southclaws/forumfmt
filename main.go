@@ -92,7 +92,7 @@ func process(input io.Reader, output io.Writer) (err error) {
 		} else if scrape.ByTag(atom.Blockquote)(node) {
 			fmt.Fprintf(output, "[QUOTE]\n"+getText(node)+"\n[/QUOTE]")
 		} else if scrape.ByTag(atom.Pre)(node) {
-			fmt.Fprintf(output, getText(node))
+			fmt.Fprint(output, getText(node))
 		} else {
 			return
 		}

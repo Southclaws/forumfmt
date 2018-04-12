@@ -40,6 +40,25 @@ func Test_process(t *testing.T) {
 			t.Error(err)
 		}
 
-		assert.Equal(t, output.Bytes(), wantOutput)
+		assert.Equal(t, output.String(), string(wantOutput))
+	}
+}
+
+func Test_syntax(t *testing.T) {
+	type args struct {
+		in string
+	}
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		{"percent", args{`printf("%s", str);`}, `printf([COLOR="Purple"]"%s"[/COLOR], str);` + "\n"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := syntax(tt.args.in)
+			assert.Equal(t, tt.want, got)
+		})
 	}
 }

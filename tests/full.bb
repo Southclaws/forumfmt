@@ -58,9 +58,9 @@ Forget all that. Just make a [FONT="courier new"]pawn.json[/FONT] in your projec
 
 [PHP]
 {
-    "entry": "test.pwn",
-    "output": "test.amx",
-    "dependencies": ["Southclaws/samp-stdlib", "Southclaws/formatex"]
+  "entry": "test.pwn",
+  "output": "test.amx",
+  "dependencies": ["Southclaws/samp-stdlib", "Southclaws/formatex"]
 }
 [/PHP]
 
@@ -121,10 +121,10 @@ Use JSON or YAML to write your server config:
 
 [PHP]
 {
-    "gamemodes": ["rivershell"],
-    "plugins": ["maddinat0r/sscanf"],
-    "rcon_password": "test",
-    "port": 8080
+  "gamemodes": ["rivershell"],
+  "plugins": ["maddinat0r/sscanf"],
+  "rcon_password": "test",
+  "port": 8080
 }
 [/PHP]
 
@@ -168,8 +168,10 @@ Bootstrap a new SA:MP server and generates a [FONT="courier new"]samp.json[/FONT
 
 [LIST]
 [*][FONT="courier new"]--version value[/FONT]: the SA:MP server version to use (default: “0.3.7”)
-[*][FONT="courier new"]--dir value[/FONT]: working directory for the server - by default, uses the current directory (default: “.”)
-[*][FONT="courier new"]--endpoint value[/FONT]: endpoint to download packages from (default: “[URL="http://files.sa-mp.com""]http://files.sa-mp.com”[/URL])
+[*][FONT="courier new"]--dir value[/FONT]: working directory for the server - by default, uses the current
+directory (default: “.”)
+[*][FONT="courier new"]--endpoint value[/FONT]: endpoint to download packages from (default:
+“[URL="http://files.sa-mp.com")"]http://files.sa-mp.com”)[/URL]
 [/LIST]
 
 [COLOR="DeepSkyBlue"][SIZE="5"][B][FONT="courier new"]sampctl server download[/FONT][/B][/SIZE][/COLOR]
@@ -182,8 +184,10 @@ Downloads the files necessary to run a SA:MP server to the current directory (un
 
 [LIST]
 [*][FONT="courier new"]--version value[/FONT]: the SA:MP server version to use (default: “0.3.7”)
-[*][FONT="courier new"]--dir value[/FONT]: working directory for the server - by default, uses the current directory (default: “.”)
-[*][FONT="courier new"]--endpoint value[/FONT]: endpoint to download packages from (default: “[URL="http://files.sa-mp.com""]http://files.sa-mp.com”[/URL])
+[*][FONT="courier new"]--dir value[/FONT]: working directory for the server - by default, uses the current
+directory (default: “.”)
+[*][FONT="courier new"]--endpoint value[/FONT]: endpoint to download packages from (default:
+“[URL="http://files.sa-mp.com")"]http://files.sa-mp.com”)[/URL]
 [/LIST]
 
 [COLOR="DeepSkyBlue"][SIZE="5"][B][FONT="courier new"]sampctl server ensure[/FONT][/B][/SIZE][/COLOR]
@@ -195,7 +199,8 @@ Ensures the server environment is representative of the configuration specified 
 [COLOR="SlateGray"][SIZE="5"]Flags[/SIZE][/COLOR]
 
 [LIST]
-[*][FONT="courier new"]--dir value[/FONT]: working directory for the server - by default, uses the current directory (default: “.”)
+[*][FONT="courier new"]--dir value[/FONT]: working directory for the server - by default, uses the current
+directory (default: “.”)
 [*][FONT="courier new"]--noCache --forceEnsure[/FONT]: forces download of plugins if –forceEnsure is set
 [/LIST]
 
@@ -208,9 +213,12 @@ Generates a [FONT="courier new"]server.cfg[/FONT] file based on the configuratio
 [COLOR="SlateGray"][SIZE="5"]Flags[/SIZE][/COLOR]
 
 [LIST]
-[*][FONT="courier new"]--dir value[/FONT]: working directory for the server - by default, uses the current directory (default: “.”)
-[*][FONT="courier new"]--container[/FONT]: starts the server as a Linux container instead of running it in the current directory
-[*][FONT="courier new"]--mountCache --container[/FONT]: if –container is set, mounts the local cache directory inside the container
+[*][FONT="courier new"]--dir value[/FONT]: working directory for the server - by default, uses the current
+directory (default: “.”)
+[*][FONT="courier new"]--container[/FONT]: starts the server as a Linux container instead of running it in
+the current directory
+[*][FONT="courier new"]--mountCache --container[/FONT]: if –container is set, mounts the local cache
+directory inside the container
 [*][FONT="courier new"]--forceEnsure[/FONT]: forces plugin and binaries ensure before run
 [*][FONT="courier new"]--noCache --forceEnsure[/FONT]: forces download of plugins if –forceEnsure is set
 [/LIST]
@@ -232,7 +240,8 @@ Helper tool to bootstrap a new package or turn an existing project into a packag
 [COLOR="SlateGray"][SIZE="5"]Flags[/SIZE][/COLOR]
 
 [LIST]
-[*][FONT="courier new"]--dir value[/FONT]: working directory for the project - by default, uses the current directory (default: “.”)
+[*][FONT="courier new"]--dir value[/FONT]: working directory for the project - by default, uses the
+current directory (default: “.”)
 [/LIST]
 
 [COLOR="DeepSkyBlue"][SIZE="5"][B][FONT="courier new"]sampctl package ensure[/FONT][/B][/SIZE][/COLOR]
@@ -244,7 +253,8 @@ Ensures dependencies are up to date based on the [FONT="courier new"]dependencie
 [COLOR="SlateGray"][SIZE="5"]Flags[/SIZE][/COLOR]
 
 [LIST]
-[*][FONT="courier new"]--dir value[/FONT]: working directory for the project - by default, uses the current directory (default: “.”)
+[*][FONT="courier new"]--dir value[/FONT]: working directory for the project - by default, uses the
+current directory (default: “.”)
 [/LIST]
 
 [COLOR="DeepSkyBlue"][SIZE="5"][B][FONT="courier new"]sampctl package install[/FONT][/B][/SIZE][/COLOR]
@@ -256,7 +266,8 @@ Installs a new package by adding it to the [FONT="courier new"]dependencies[/FON
 [COLOR="SlateGray"][SIZE="5"]Flags[/SIZE][/COLOR]
 
 [LIST]
-[*][FONT="courier new"]--dir value[/FONT]: working directory for the project - by default, uses the current directory (default: “.”)
+[*][FONT="courier new"]--dir value[/FONT]: working directory for the project - by default, uses the
+current directory (default: “.”)
 [/LIST]
 
 [COLOR="DeepSkyBlue"][SIZE="5"][B][FONT="courier new"]sampctl package build[/FONT][/B][/SIZE][/COLOR]
@@ -268,9 +279,11 @@ Builds a package defined by a [FONT="courier new"]pawn.json[/FONT]/[FONT="courie
 [COLOR="SlateGray"][SIZE="5"]Flags[/SIZE][/COLOR]
 
 [LIST]
-[*][FONT="courier new"]--dir value[/FONT]: working directory for the project - by default, uses the current directory (default: “.”)
+[*][FONT="courier new"]--dir value[/FONT]: working directory for the project - by default, uses the
+current directory (default: “.”)
 [*][FONT="courier new"]--build --forceBuild[/FONT]: build configuration to use if –forceBuild is set
-[*][FONT="courier new"]--forceEnsure --forceBuild[/FONT]: forces dependency ensure before build if –forceBuild is set
+[*][FONT="courier new"]--forceEnsure --forceBuild[/FONT]: forces dependency ensure before build if
+–forceBuild is set
 [/LIST]
 
 [COLOR="DeepSkyBlue"][SIZE="5"][B][FONT="courier new"]sampctl package run[/FONT][/B][/SIZE][/COLOR]
@@ -283,13 +296,18 @@ Compiles and runs a package defined by a [FONT="courier new"]pawn.json[/FONT]/[F
 
 [LIST]
 [*][FONT="courier new"]--version value[/FONT]: the SA:MP server version to use (default: “0.3.7”)
-[*][FONT="courier new"]--dir value[/FONT]: working directory for the server - by default, uses the current directory (default: “.”)
-[*][FONT="courier new"]--endpoint value[/FONT]: endpoint to download packages from (default: “[URL="http://files.sa-mp.com""]http://files.sa-mp.com”[/URL])
-[*][FONT="courier new"]--container[/FONT]: starts the server as a Linux container instead of running it in the current directory
-[*][FONT="courier new"]--mountCache --container[/FONT]: if –container is set, mounts the local cache directory inside the container
+[*][FONT="courier new"]--dir value[/FONT]: working directory for the server - by default, uses the current
+directory (default: “.”)
+[*][FONT="courier new"]--endpoint value[/FONT]: endpoint to download packages from (default:
+“[URL="http://files.sa-mp.com")"]http://files.sa-mp.com”)[/URL]
+[*][FONT="courier new"]--container[/FONT]: starts the server as a Linux container instead of running it in
+the current directory
+[*][FONT="courier new"]--mountCache --container[/FONT]: if –container is set, mounts the local cache
+directory inside the container
 [*][FONT="courier new"]--build --forceBuild[/FONT]: build configuration to use if –forceBuild is set
 [*][FONT="courier new"]--forceBuild[/FONT]: forces a build to run before executing the server
-[*][FONT="courier new"]--forceEnsure --forceBuild[/FONT]: forces dependency ensure before build if –forceBuild is set
+[*][FONT="courier new"]--forceEnsure --forceBuild[/FONT]: forces dependency ensure before build if
+–forceBuild is set
 [*][FONT="courier new"]--noCache --forceEnsure[/FONT]: forces download of plugins if –forceEnsure is set
 [/LIST]
 
