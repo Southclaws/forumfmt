@@ -86,13 +86,17 @@ func process(input io.Reader, output io.Writer) (err error) {
 		} else if scrape.ByTag(atom.P)(node) {
 			fmt.Fprint(output, strings.Replace(getText(node), "\n", " ", -1))
 		} else if scrape.ByTag(atom.Ul)(node) {
-			fmt.Fprintf(output, "[LIST]\n"+getText(node)+"\n[/LIST]")
+			fmt.Fprintf(output, "[LIST]"+getText(node)+"[/LIST]")
+		} else if scrape.ByTag(atom.Ol)(node) {
+			fmt.Fprintf(output, "[LIST=1]"+getText(node)+"[/LIST]")
 		} else if scrape.ByTag(atom.Blockquote)(node) {
 			fmt.Fprintf(output, "[QUOTE]\n"+getText(node)+"\n[/QUOTE]")
 		} else if scrape.ByTag(atom.Pre)(node) {
 			fmt.Fprintf(output, getText(node))
+		} else {
+			return
 		}
-		fmt.Fprintf(output, "\n")
+		fmt.Fprintf(output, "\n\n")
 	})
 
 	return
@@ -140,7 +144,7 @@ func getText(node *html.Node) string {
 				end = `[/b]`
 			} else if inner.Data == "li" {
 				begin = "[*]"
-				end = "\n"
+				end = ""
 			} else if inner.Data == "a" {
 				href := getAttr(inner, "href")
 				if href != "" {

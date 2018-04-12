@@ -11,21 +11,17 @@ The Swiss Army Knife of SA:MP - vital tools for any server owner or library main
 Server management and configuration tools:
 
 [LIST]
-
 [*]Manage your server settings in JSON format (compiles to server.cfg)
 [*]Run the server from [FONT="courier new"]sampctl[/FONT] and let it worry about automatic restarts
 [*]Automatically download Windows/Linux server binaries when you need them
-
 [/LIST]
 
 Package management and dependency tools:
 
 [LIST]
-
 [*]Always have the libraries you need at the versions to specify
 [*]No more copies of the Pawn compiler or includes, let [FONT="courier new"]sampctl[/FONT] handle it
 [*]Easily write and run tests for libraries or quickly run arbitrary code
-
 [/LIST]
 
 [COLOR="RoyalBlue"][SIZE="6"][B]Installation[/B][/SIZE][/COLOR]
@@ -33,11 +29,9 @@ Package management and dependency tools:
 Installation is simple and fast on all platforms. If you’re not into it, uninstallation is also simple and fast.
 
 [LIST]
-
 [*][URL="https://github.com/Southclaws/sampctl/wiki/Linux"]Linux (Debian/Ubuntu)[/URL]
 [*][URL="https://github.com/Southclaws/sampctl/wiki/Windows"]Windows[/URL]
 [*][URL="https://github.com/Southclaws/sampctl/wiki/Mac"]Mac[/URL]
-
 [/LIST]
 
 [COLOR="RoyalBlue"][SIZE="6"][B]Usage[/B][/SIZE][/COLOR]
@@ -45,8 +39,6 @@ Installation is simple and fast on all platforms. If you’re not into it, unins
 Scroll to the end of this document for an overview of the commands.
 
 Or visit the [URL="https://github.com/Southclaws/sampctl/wiki"]wiki[/URL] for all the information you need.
-
-
 
 [COLOR="RoyalBlue"][SIZE="6"][B]Features[/B][/SIZE][/COLOR]
 
@@ -83,12 +75,12 @@ main() {
     formatex(str, sizeof str, [COLOR="Purple"]"My favourite vehicle is: '%v'!", 400); [COLOR="Green"]// should print "Landstalker"[/COLOR][/COLOR]
     print(str);
 }
-
 [/FONT][/code]
 
 And run it!
 
-[FONT="courier new"]sampctl package run
+[CODE]
+sampctl package run
 Using cached package for 0.3.7
 building /: with 3.10.4
 Compiling source: '/tmp/test.pwn' with compiler 3.10.4...
@@ -108,19 +100,17 @@ Filterscripts
   Loaded 0 filterscripts.
 
 My favourite vehicle is: 'Landstalker'!
-[/FONT]
+[/CODE]
 
 You get the compiler output and the server output without ever needing to:
 
 [LIST]
-
 [*]visit sa-mp.com/download.php
 [*]unzip a server package
 [*]worry about Windows or Linux
 [*]set up the Pawn compiler
 [*]make sure the Pawn compiler is reading the correct includes
 [*]download the formatex include
-
 [/LIST]
 
 [URL="https://github.com/Southclaws/sampctl/wiki/Package-Definition-Reference"]See documentation for more info.[/URL]
@@ -140,18 +130,17 @@ Use JSON or YAML to write your server config:
 
 It compiles to this:
 
-[FONT="courier new"]gamemode0 rivershell
+[CODE]
+gamemode0 rivershell
 plugins filemanager.so
 rcon_password test
 port 8080
 (... and the rest of the settings which have default values)
-[/FONT]
+[/CODE]
 
 What also happens here is [FONT="courier new"]maddinat0r/sscanf[/FONT] tells sampctl to automatically get the latest sscanf plugin and place the [FONT="courier new"].so[/FONT] or [FONT="courier new"].dll[/FONT] file into the [FONT="courier new"]plugins/[/FONT] directory.
 
 [URL="https://github.com/Southclaws/sampctl/wiki/Runtime-Configuration-Reference"]See documentation for more info.[/URL]
-
-
 
 [COLOR="#FF4700"][SIZE="7"][B][FONT="courier new"]sampctl[/FONT][/B][/SIZE][/COLOR]
 
@@ -178,11 +167,9 @@ Bootstrap a new SA:MP server and generates a [FONT="courier new"]samp.json[/FONT
 [COLOR="SlateGray"][SIZE="5"]Flags[/SIZE][/COLOR]
 
 [LIST]
-
 [*][FONT="courier new"]--version value[/FONT]: the SA:MP server version to use (default: “0.3.7”)
 [*][FONT="courier new"]--dir value[/FONT]: working directory for the server - by default, uses the current directory (default: “.”)
 [*][FONT="courier new"]--endpoint value[/FONT]: endpoint to download packages from (default: “[URL="http://files.sa-mp.com""]http://files.sa-mp.com”[/URL])
-
 [/LIST]
 
 [COLOR="DeepSkyBlue"][SIZE="5"][B][FONT="courier new"]sampctl server download[/FONT][/B][/SIZE][/COLOR]
@@ -194,11 +181,9 @@ Downloads the files necessary to run a SA:MP server to the current directory (un
 [COLOR="SlateGray"][SIZE="5"]Flags[/SIZE][/COLOR]
 
 [LIST]
-
 [*][FONT="courier new"]--version value[/FONT]: the SA:MP server version to use (default: “0.3.7”)
 [*][FONT="courier new"]--dir value[/FONT]: working directory for the server - by default, uses the current directory (default: “.”)
 [*][FONT="courier new"]--endpoint value[/FONT]: endpoint to download packages from (default: “[URL="http://files.sa-mp.com""]http://files.sa-mp.com”[/URL])
-
 [/LIST]
 
 [COLOR="DeepSkyBlue"][SIZE="5"][B][FONT="courier new"]sampctl server ensure[/FONT][/B][/SIZE][/COLOR]
@@ -210,10 +195,8 @@ Ensures the server environment is representative of the configuration specified 
 [COLOR="SlateGray"][SIZE="5"]Flags[/SIZE][/COLOR]
 
 [LIST]
-
 [*][FONT="courier new"]--dir value[/FONT]: working directory for the server - by default, uses the current directory (default: “.”)
 [*][FONT="courier new"]--noCache --forceEnsure[/FONT]: forces download of plugins if –forceEnsure is set
-
 [/LIST]
 
 [COLOR="DeepSkyBlue"][SIZE="5"][B][FONT="courier new"]sampctl server run[/FONT][/B][/SIZE][/COLOR]
@@ -225,16 +208,12 @@ Generates a [FONT="courier new"]server.cfg[/FONT] file based on the configuratio
 [COLOR="SlateGray"][SIZE="5"]Flags[/SIZE][/COLOR]
 
 [LIST]
-
 [*][FONT="courier new"]--dir value[/FONT]: working directory for the server - by default, uses the current directory (default: “.”)
 [*][FONT="courier new"]--container[/FONT]: starts the server as a Linux container instead of running it in the current directory
 [*][FONT="courier new"]--mountCache --container[/FONT]: if –container is set, mounts the local cache directory inside the container
 [*][FONT="courier new"]--forceEnsure[/FONT]: forces plugin and binaries ensure before run
 [*][FONT="courier new"]--noCache --forceEnsure[/FONT]: forces download of plugins if –forceEnsure is set
-
 [/LIST]
-
-
 
 [COLOR="DeepSkyBlue"][SIZE="5"][B][FONT="courier new"]sampctl package[/FONT][/B][/SIZE][/COLOR]
 
@@ -253,9 +232,7 @@ Helper tool to bootstrap a new package or turn an existing project into a packag
 [COLOR="SlateGray"][SIZE="5"]Flags[/SIZE][/COLOR]
 
 [LIST]
-
 [*][FONT="courier new"]--dir value[/FONT]: working directory for the project - by default, uses the current directory (default: “.”)
-
 [/LIST]
 
 [COLOR="DeepSkyBlue"][SIZE="5"][B][FONT="courier new"]sampctl package ensure[/FONT][/B][/SIZE][/COLOR]
@@ -267,9 +244,7 @@ Ensures dependencies are up to date based on the [FONT="courier new"]dependencie
 [COLOR="SlateGray"][SIZE="5"]Flags[/SIZE][/COLOR]
 
 [LIST]
-
 [*][FONT="courier new"]--dir value[/FONT]: working directory for the project - by default, uses the current directory (default: “.”)
-
 [/LIST]
 
 [COLOR="DeepSkyBlue"][SIZE="5"][B][FONT="courier new"]sampctl package install[/FONT][/B][/SIZE][/COLOR]
@@ -281,9 +256,7 @@ Installs a new package by adding it to the [FONT="courier new"]dependencies[/FON
 [COLOR="SlateGray"][SIZE="5"]Flags[/SIZE][/COLOR]
 
 [LIST]
-
 [*][FONT="courier new"]--dir value[/FONT]: working directory for the project - by default, uses the current directory (default: “.”)
-
 [/LIST]
 
 [COLOR="DeepSkyBlue"][SIZE="5"][B][FONT="courier new"]sampctl package build[/FONT][/B][/SIZE][/COLOR]
@@ -295,11 +268,9 @@ Builds a package defined by a [FONT="courier new"]pawn.json[/FONT]/[FONT="courie
 [COLOR="SlateGray"][SIZE="5"]Flags[/SIZE][/COLOR]
 
 [LIST]
-
 [*][FONT="courier new"]--dir value[/FONT]: working directory for the project - by default, uses the current directory (default: “.”)
 [*][FONT="courier new"]--build --forceBuild[/FONT]: build configuration to use if –forceBuild is set
 [*][FONT="courier new"]--forceEnsure --forceBuild[/FONT]: forces dependency ensure before build if –forceBuild is set
-
 [/LIST]
 
 [COLOR="DeepSkyBlue"][SIZE="5"][B][FONT="courier new"]sampctl package run[/FONT][/B][/SIZE][/COLOR]
@@ -311,7 +282,6 @@ Compiles and runs a package defined by a [FONT="courier new"]pawn.json[/FONT]/[F
 [COLOR="SlateGray"][SIZE="5"]Flags[/SIZE][/COLOR]
 
 [LIST]
-
 [*][FONT="courier new"]--version value[/FONT]: the SA:MP server version to use (default: “0.3.7”)
 [*][FONT="courier new"]--dir value[/FONT]: working directory for the server - by default, uses the current directory (default: “.”)
 [*][FONT="courier new"]--endpoint value[/FONT]: endpoint to download packages from (default: “[URL="http://files.sa-mp.com""]http://files.sa-mp.com”[/URL])
@@ -321,16 +291,11 @@ Compiles and runs a package defined by a [FONT="courier new"]pawn.json[/FONT]/[F
 [*][FONT="courier new"]--forceBuild[/FONT]: forces a build to run before executing the server
 [*][FONT="courier new"]--forceEnsure --forceBuild[/FONT]: forces dependency ensure before build if –forceBuild is set
 [*][FONT="courier new"]--noCache --forceEnsure[/FONT]: forces download of plugins if –forceEnsure is set
-
 [/LIST]
-
-
 
 [COLOR="DeepSkyBlue"][SIZE="5"][B][FONT="courier new"]sampctl version[/FONT][/B][/SIZE][/COLOR]
 
 Show version number - this is also the version of the container image that will be used for [FONT="courier new"]--container[/FONT] runtimes.
-
-
 
 [COLOR="DeepSkyBlue"][SIZE="5"][B][FONT="courier new"]sampctl docs[/FONT][/B][/SIZE][/COLOR]
 
@@ -338,20 +303,14 @@ Usage: [FONT="courier new"]sampctl docs > documentation.md[/FONT]
 
 Generate documentation in markdown format and print to standard out.
 
-
-
 [COLOR="DeepSkyBlue"][SIZE="5"][B][FONT="courier new"]sampctl help[/FONT][/B][/SIZE][/COLOR]
 
 Usage: [FONT="courier new"]Shows a list of commands or help for one command[/FONT]
 
-
-
 [COLOR="RoyalBlue"][SIZE="6"][B]Global Flags[/B][/SIZE][/COLOR]
 
 [LIST]
-
 [*][FONT="courier new"]--help, -h[/FONT]: show help
 [*][FONT="courier new"]--appVersion, -V[/FONT]: sampctl version
-
 [/LIST]
 
