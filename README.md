@@ -61,21 +61,29 @@ If you don't have Go installed, there are precompiled binaries available
 
 ## Usage
 
-Then you can use the command, either by passing a file as an argument:
+Then you can use the command, either by passing input and output files as an
+argument:
 
 ```bash
-forumfmt README.md > README.bbcode
+forumfmt README.md README.bbcode
 ```
 
-Or by piping to stdin on Unix platforms:
+Or by piping to stdin and/or stdout on Unix platforms:
 
 ```bash
 cat README.md | forumfmt > README.bbcode
 ```
 
-You can also specify a style file to use, to determine the forum look, but only when all parameters are given:
+You can also specify a style file to use, to determine the forum look, but only
+when all parameters are given:
 
 ```bash
 forumfmt README.md README.bbcode southclaws.json
 ```
 
+The available styles are:
+
+* `southclaws.json`
+* `yless.json`
+
+Feel free to PR more styles if you want, just copy the existing `.json` files.

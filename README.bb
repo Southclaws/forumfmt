@@ -57,13 +57,13 @@ If you don’t have Go installed, there are precompiled binaries available [URL=
 
 [COLOR="RoyalBlue"][SIZE="6"][B]Usage[/B][/SIZE][/COLOR]
 
-Then you can use the command, either by passing a file as an argument:
+Then you can use the command, either by passing input and output files as an argument:
 
 [CODE]
-forumfmt README.md > README.bbcode
+forumfmt README.md README.bbcode
 [/CODE]
 
-Or by piping to stdin on Unix platforms:
+Or by piping to stdin and/or stdout on Unix platforms:
 
 [CODE]
 cat README.md | forumfmt > README.bbcode
@@ -74,4 +74,13 @@ You can also specify a style file to use, to determine the forum look, but only 
 [CODE]
 forumfmt README.md README.bbcode southclaws.json
 [/CODE]
+
+The available styles are:
+
+[LIST]
+[*][FONT="courier new"]southclaws.json[/FONT]
+[*][FONT="courier new"]yless.json[/FONT]
+[/LIST]
+
+Feel free to PR more styles if you want, just copy the existing [FONT="courier new"].json[/FONT] files.
 
