@@ -40,7 +40,7 @@ func Test_process(t *testing.T) {
 			t.Error(err)
 		}
 
-		assert.Equal(t, output.String(), string(wantOutput))
+		assert.Equal(t, string(wantOutput), output.String())
 	}
 }
 
