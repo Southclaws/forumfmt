@@ -2,7 +2,7 @@
 
 You should use [FONT="courier new"]%e[/FONT] instead of [FONT="courier new"]%s[/FONT] in SQL calls.
 
-[code][FONT="courier new"]
+[CODE]
 format(str, [COLOR="Purple"]128[/COLOR], [COLOR="Purple"]"%s"[/COLOR], s);
-[/FONT][/code]
+[/CODE]
 

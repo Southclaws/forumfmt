@@ -150,9 +150,9 @@ func getText(node *html.Node, jsonParsed *gabs.Container) string {
 						begin = "[PHP]\n"
 						end = "[/PHP]"
 					} else if attrIs(inner, "class", "language-pawn") {
-						begin = `[code][FONT="courier new"]` + "\n"
+						begin = `[CODE]` + "\n"
 						text = syntax(strings.TrimSpace(text), jsonParsed)
-						end = "[/FONT][/code]"
+						end = "[/CODE]"
 					} else {
 						begin = "[CODE]\n"
 						end = "[/CODE]"

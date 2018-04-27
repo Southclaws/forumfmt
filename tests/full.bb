@@ -66,7 +66,7 @@ Forget all that. Just make a [FONT="courier new"]pawn.json[/FONT] in your projec
 
 Write your quick test code:
 
-[code][FONT="courier new"]
+[CODE]
 [COLOR="Blue"]#include <a_samp>[/COLOR]
 [COLOR="Blue"]#include <formatex>[/COLOR]
 
@@ -75,7 +75,7 @@ main() {
     formatex(str, sizeof str, [COLOR="Purple"]"My favourite vehicle is: '%v'!", 400); [COLOR="Green"]// should print "Landstalker"[/COLOR][/COLOR]
     print(str);
 }
-[/FONT][/code]
+[/CODE]
 
 And run it!
 
