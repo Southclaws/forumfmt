@@ -69,3 +69,9 @@ Or by piping to stdin on Unix platforms:
 cat README.md | forumfmt > README.bbcode
 [/CODE]
 
+You can also specify a style file to use, to determine the forum look, but only when all parameters are given:
+
+[CODE]
+forumfmt README.md README.bbcode southclaws.json
+[/CODE]
+
