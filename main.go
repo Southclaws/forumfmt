@@ -14,6 +14,7 @@ import (
 	"golang.org/x/net/html"
 	"golang.org/x/net/html/atom"
 	"gopkg.in/russross/blackfriday.v2"
+	"github.com/Jeffail/gabs"
 )
 
 func main() {
@@ -21,6 +22,7 @@ func main() {
 		input      *os.File
 		output     *os.File
 		outputFile string
+		styler     string
 		err        error
 	)
 
@@ -34,11 +36,19 @@ func main() {
 			fmt.Println("failed to open input file:", err)
 		}
 		outputFile = flag.Arg(1)
+		styler = "southclaws.json"
+	case 3:
+		input, err = os.Open(flag.Arg(0))
+		if err != nil {
+			fmt.Println("failed to open input file:", err)
+		}
+		outputFile = flag.Arg(1)
+		styler = flag.Arg(2)
 	default:
 		fmt.Printf("input must be from stdin or file\n")
 		os.Exit(1)
 	}
-
+	
 	if outputFile == "" {
 		output = os.Stdout
 	} else {
@@ -50,14 +60,19 @@ func main() {
 			}
 		}()
 	}
+	
+	jsonParsed, err := gabs.ParseJSONFile(styler)
+	if err != nil {
+		fmt.Println("failed to process styles:", err)
+	}
 
-	err = process(input, output)
+	err = process(input, output, jsonParsed)
 	if err != nil {
 		fmt.Println("failed to process input:", err)
 	}
 }
 
-func process(input io.Reader, output io.Writer) (err error) {
+func process(input io.Reader, output io.Writer, jsonParsed *gabs.Container) (err error) {
 	contents, err := ioutil.ReadAll(input)
 	if err != nil {
 		return
@@ -73,26 +88,31 @@ func process(input io.Reader, output io.Writer) (err error) {
 	}
 
 	doc := root.FirstChild.LastChild // <html> <head /> <body> (this gets us here) </body>
+	
+	styleH1 := jsonParsed.Path("tags.H1").Data().(string)
+	styleH2 := jsonParsed.Path("tags.H2").Data().(string)
+	styleH3 := jsonParsed.Path("tags.H3").Data().(string)
+	styleH4 := jsonParsed.Path("tags.H4").Data().(string)
 
 	forChildren(doc, func(node *html.Node) {
 		if scrape.ByTag(atom.H1)(node) {
-			fmt.Fprintf(output, `[COLOR="#FF4700"][SIZE="7"][B]%s[/B][/SIZE][/COLOR]`, getText(node))
+			fmt.Fprintf(output, styleH1, getText(node, jsonParsed))
 		} else if scrape.ByTag(atom.H2)(node) {
-			fmt.Fprintf(output, `[COLOR="RoyalBlue"][SIZE="6"][B]%s[/B][/SIZE][/COLOR]`, getText(node))
+			fmt.Fprintf(output, styleH2, getText(node, jsonParsed))
 		} else if scrape.ByTag(atom.H3)(node) {
-			fmt.Fprintf(output, `[COLOR="DeepSkyBlue"][SIZE="5"][B]%s[/B][/SIZE][/COLOR]`, getText(node))
+			fmt.Fprintf(output, styleH3, getText(node, jsonParsed))
 		} else if scrape.ByTag(atom.H4)(node) {
-			fmt.Fprintf(output, `[COLOR="SlateGray"][SIZE="5"]%s[/SIZE][/COLOR]`, getText(node))
+			fmt.Fprintf(output, styleH4, getText(node, jsonParsed))
 		} else if scrape.ByTag(atom.P)(node) {
-			fmt.Fprint(output, strings.Replace(getText(node), "\n", " ", -1))
+			fmt.Fprint(output, strings.Replace(getText(node, jsonParsed), "\n", " ", -1))
 		} else if scrape.ByTag(atom.Ul)(node) {
-			fmt.Fprintf(output, "[LIST]"+getText(node)+"[/LIST]")
+			fmt.Fprintf(output, "[LIST]"+getText(node, jsonParsed)+"[/LIST]")
 		} else if scrape.ByTag(atom.Ol)(node) {
-			fmt.Fprintf(output, "[LIST=1]"+getText(node)+"[/LIST]")
+			fmt.Fprintf(output, "[LIST=1]"+getText(node, jsonParsed)+"[/LIST]")
 		} else if scrape.ByTag(atom.Blockquote)(node) {
-			fmt.Fprintf(output, "[QUOTE]\n"+getText(node)+"\n[/QUOTE]")
+			fmt.Fprintf(output, "[QUOTE]\n"+getText(node, jsonParsed)+"\n[/QUOTE]")
 		} else if scrape.ByTag(atom.Pre)(node) {
-			fmt.Fprint(output, getText(node))
+			fmt.Fprint(output, getText(node, jsonParsed))
 		} else {
 			return
 		}
@@ -108,15 +128,16 @@ func forChildren(node *html.Node, fn func(node *html.Node)) {
 	}
 }
 
-func getText(node *html.Node) string {
+func getText(node *html.Node, jsonParsed *gabs.Container) string {
 	buf := bytes.Buffer{}
+	
 	forChildren(node, func(inner *html.Node) {
 		if inner.Type == html.TextNode {
 			buf.WriteString(inner.Data)
 		} else if inner.Type == html.ElementNode {
 			begin := ""
 			end := ""
-			text := getText(inner)
+			text := getText(inner, jsonParsed)
 
 			if inner.Data == "code" {
 				if hasAttr(inner, "class") {
@@ -125,7 +146,7 @@ func getText(node *html.Node) string {
 						end = "[/PHP]"
 					} else if attrIs(inner, "class", "language-pawn") {
 						begin = `[code][FONT="courier new"]` + "\n"
-						text = syntax(strings.TrimSpace(text))
+						text = syntax(strings.TrimSpace(text), jsonParsed)
 						end = "[/FONT][/code]"
 					} else {
 						begin = "[CODE]\n"
@@ -200,48 +221,45 @@ func getAttr(node *html.Node, attr string) string {
 	return ""
 }
 
-func syntax(in string) string {
+func syntax(in string, jsonParsed *gabs.Container) string {
 	stringLiteral := regexp.MustCompile(`"[\s\S]*"`)
 	comment := regexp.MustCompile(`//.*`)
 	blockCommentOpen := regexp.MustCompile(`\/\*.*`)
 	blockCommentClose := regexp.MustCompile(`.*\*\/`)
 	directive := regexp.MustCompile(`#.*`)
 
+	styleCommentOpen := jsonParsed.Path("comment_open").Data().(string)
+	styleCommentClose := jsonParsed.Path("comment_close").Data().(string)
+	styleDirectives := jsonParsed.Path("directives").Data().(string)
+	styleNumbers := jsonParsed.Path("numbers").Data().(string)
+	styleStrings := jsonParsed.Path("strings").Data().(string)
+	//styleOperators := jsonParsed.Path("operators").Data().(string)
+	
 	replacements := [][2]string{
-		{`\bif\b`, `[COLOR="Blue"]$0[/COLOR]`},
-		{`\belse\b`, `[COLOR="Blue"]$0[/COLOR]`},
-		{`\bfor\b`, `[COLOR="Blue"]$0[/COLOR]`},
-		{`\bnew\b`, `[COLOR="Blue"]$0[/COLOR]`},
-		{`\benum\b`, `[COLOR="Blue"]$0[/COLOR]`},
-
-		{`\bstate\b`, `[COLOR="Orange"]$0[/COLOR]`},
-
-		{`\bstock\b`, `[COLOR="DeepSkyBlue"]$0[/COLOR]`},
-		{`\bpublic\b`, `[COLOR="DeepSkyBlue"]$0[/COLOR]`},
-		{`\bforward\b`, `[COLOR="DeepSkyBlue"]$0[/COLOR]`},
-		{`\bconst\b`, `[COLOR="DeepSkyBlue"]$0[/COLOR]`},
-		{`\bstatic\b`, `[COLOR="DeepSkyBlue"]$0[/COLOR]`},
-		{`\bhook\b`, `[COLOR="Blue"]$0[/COLOR]`},
-
-		{`(\+|-)?\d+`, `[COLOR="Purple"]$0[/COLOR]`},
+		{`(\+|-)?\d+`, styleNumbers},
 	}
-
+	
+	children, _ := jsonParsed.Path("keywords").ChildrenMap()
+	for key, child := range children {
+		replacements = append(replacements, [2]string{`\b` + key + `\b`, child.Data().(string)})
+	}
+	
 	processSpecial := true
 	processCommon := true
 	inBlockComment := false
 	buf := bytes.Buffer{}
 	for _, line := range strings.Split(in, "\n") {
-		line = stringLiteral.ReplaceAllString(line, `[COLOR="Purple"]$0[/COLOR]`)
+		line = stringLiteral.ReplaceAllString(line, styleStrings)
 
 		if !inBlockComment && blockCommentOpen.MatchString(line) {
-			line = blockCommentOpen.ReplaceAllString(line, `[COLOR="Green"]$0`)
+			line = blockCommentOpen.ReplaceAllString(line, styleCommentOpen + `$0`)
 			inBlockComment = true
 		}
 		if inBlockComment {
 			processSpecial = false
 			processCommon = false
 			if blockCommentClose.MatchString(line) {
-				line = blockCommentClose.ReplaceAllString(line, `$0[/COLOR]`)
+				line = blockCommentClose.ReplaceAllString(line, `$0` + styleCommentClose)
 				inBlockComment = false
 				processSpecial = true
 				processCommon = true
@@ -250,10 +268,10 @@ func syntax(in string) string {
 
 		if processSpecial {
 			if comment.MatchString(line) {
-				line = comment.ReplaceAllString(line, `[COLOR="Green"]$0[/COLOR]`)
+				line = comment.ReplaceAllString(line, styleCommentOpen + `$0` + styleCommentClose)
 				processCommon = false
 			} else if directive.MatchString(line) {
-				line = directive.ReplaceAllString(line, `[COLOR="Blue"]$0[/COLOR]`)
+				line = directive.ReplaceAllString(line, styleDirectives)
 				processCommon = false
 			} else {
 				processCommon = true
