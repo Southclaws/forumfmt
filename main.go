@@ -81,6 +81,7 @@ func process(input io.Reader, output io.Writer, jsonParsed *gabs.Container) (err
 	if err != nil {
 		return
 	}
+	contents = bytes.Replace(contents, []byte("\r"), []byte(""), -1)
 
 	out := blackfriday.Run(contents)
 	//fmt.Fprint(output, string(out))
