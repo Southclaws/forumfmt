@@ -10,11 +10,11 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/Jeffail/gabs"
 	"github.com/yhat/scrape"
 	"golang.org/x/net/html"
 	"golang.org/x/net/html/atom"
 	"gopkg.in/russross/blackfriday.v2"
-	"github.com/Jeffail/gabs"
 )
 
 func main() {
@@ -48,11 +48,15 @@ func main() {
 		fmt.Printf("input must be from stdin or file\n")
 		os.Exit(1)
 	}
-	
+
 	if outputFile == "" {
 		output = os.Stdout
 	} else {
-		output, err = os.OpenFile(outputFile, os.O_WRONLY, 0666)
+		output, err = os.Create(outputFile)
+		if err != nil {
+			fmt.Println("failed to open output file:", err)
+			return
+		}
 		defer func() {
 			err = output.Close()
 			if err != nil {
@@ -60,7 +64,7 @@ func main() {
 			}
 		}()
 	}
-	
+
 	jsonParsed, err := gabs.ParseJSONFile(styler)
 	if err != nil {
 		fmt.Println("failed to process styles:", err)
@@ -88,7 +92,7 @@ func process(input io.Reader, output io.Writer, jsonParsed *gabs.Container) (err
 	}
 
 	doc := root.FirstChild.LastChild // <html> <head /> <body> (this gets us here) </body>
-	
+
 	styleH1 := jsonParsed.Path("tags.H1").Data().(string)
 	styleH2 := jsonParsed.Path("tags.H2").Data().(string)
 	styleH3 := jsonParsed.Path("tags.H3").Data().(string)
@@ -130,7 +134,7 @@ func forChildren(node *html.Node, fn func(node *html.Node)) {
 
 func getText(node *html.Node, jsonParsed *gabs.Container) string {
 	buf := bytes.Buffer{}
-	
+
 	forChildren(node, func(inner *html.Node) {
 		if inner.Type == html.TextNode {
 			buf.WriteString(inner.Data)
@@ -234,16 +238,16 @@ func syntax(in string, jsonParsed *gabs.Container) string {
 	styleNumbers := jsonParsed.Path("numbers").Data().(string)
 	styleStrings := jsonParsed.Path("strings").Data().(string)
 	//styleOperators := jsonParsed.Path("operators").Data().(string)
-	
+
 	replacements := [][2]string{
 		{`(\+|-)?\d+`, styleNumbers},
 	}
-	
+
 	children, _ := jsonParsed.Path("keywords").ChildrenMap()
 	for key, child := range children {
 		replacements = append(replacements, [2]string{`\b` + key + `\b`, child.Data().(string)})
 	}
-	
+
 	processSpecial := true
 	processCommon := true
 	inBlockComment := false
@@ -252,14 +256,14 @@ func syntax(in string, jsonParsed *gabs.Container) string {
 		line = stringLiteral.ReplaceAllString(line, styleStrings)
 
 		if !inBlockComment && blockCommentOpen.MatchString(line) {
-			line = blockCommentOpen.ReplaceAllString(line, styleCommentOpen + `$0`)
+			line = blockCommentOpen.ReplaceAllString(line, styleCommentOpen+`$0`)
 			inBlockComment = true
 		}
 		if inBlockComment {
 			processSpecial = false
 			processCommon = false
 			if blockCommentClose.MatchString(line) {
-				line = blockCommentClose.ReplaceAllString(line, `$0` + styleCommentClose)
+				line = blockCommentClose.ReplaceAllString(line, `$0`+styleCommentClose)
 				inBlockComment = false
 				processSpecial = true
 				processCommon = true
@@ -268,7 +272,7 @@ func syntax(in string, jsonParsed *gabs.Container) string {
 
 		if processSpecial {
 			if comment.MatchString(line) {
-				line = comment.ReplaceAllString(line, styleCommentOpen + `$0` + styleCommentClose)
+				line = comment.ReplaceAllString(line, styleCommentOpen+`$0`+styleCommentClose)
 				processCommon = false
 			} else if directive.MatchString(line) {
 				line = directive.ReplaceAllString(line, styleDirectives)
