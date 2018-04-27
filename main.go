@@ -244,7 +244,11 @@ func syntax(in string, jsonParsed *gabs.Container) string {
 		{`(\+|-)?\d+`, styleNumbers},
 	}
 
-	children, _ := jsonParsed.Path("keywords").ChildrenMap()
+	children, err := jsonParsed.Path("keywords").ChildrenMap()
+	if err != nil {
+		fmt.Println("Failed to read `keywords` from JSON for syntax:", err)
+		return in
+	}
 	for key, child := range children {
 		replacements = append(replacements, [2]string{`\b` + key + `\b`, child.Data().(string)})
 	}
