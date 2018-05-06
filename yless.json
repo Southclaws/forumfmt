@@ -32,7 +32,7 @@
 		"global": "[COLOR=\"DeepSkyBlue\"]$0[/COLOR]",
 		"foreign": "[COLOR=\"DeepSkyBlue\"]$0[/COLOR]",
 		"timer": "[COLOR=\"DeepSkyBlue\"]$0[/COLOR]",
-		"hook": "[COLOR=\"DeepSkyBlue\"]$0[/COLOR]",
+		"native": "[COLOR=\"DeepSkyBlue\"]$0[/COLOR]",
 		"iterfunc": "[COLOR=\"DeepSkyBlue\"]$0[/COLOR]"
 	},
 	"numbers": "[COLOR=\"Orange\"]$0[/COLOR]",
