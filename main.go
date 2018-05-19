@@ -195,7 +195,6 @@ func getText(node *html.Node, jsonParsed *gabs.Container) string {
 				} else {
 					begin = `[FONT="courier new"]`
 					end = `[/FONT]`
-
 				}
 			} else if inner.Data == "em" {
 				begin = `[i]`
@@ -221,6 +220,9 @@ func getText(node *html.Node, jsonParsed *gabs.Container) string {
 				}
 			} else if inner.Data == "p" {
 				//nolint
+			} else if inner.Data == "ul" {
+				begin = "[LIST]"
+				end = "[/LIST]"
 			} else {
 				begin = "[UNHANDLED-TAG=" + inner.Data + "]"
 				end = "[/UNHANDLED-TAG=" + inner.Data + "]"

@@ -58,10 +58,7 @@ func Test_syntax(t *testing.T) {
 	}{
 		{"percent", args{`printf("%s", str);`}, `printf([COLOR="Purple"]"%s"[/COLOR], str);` + "\n"},
 	}
-	jsonParsed, err := gabs.ParseJSONFile("southclaws.json")
-	if err != nil {
-		panic(err)
-	}
+	jsonParsed, _ := gabs.ParseJSON([]byte(defaultSyntax))
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
