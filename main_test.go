@@ -36,10 +36,7 @@ func Test_process(t *testing.T) {
 			panic(err)
 		}
 
-		jsonParsed, err := gabs.ParseJSONFile("southclaws.json")
-		if err != nil {
-			panic(err)
-		}
+		jsonParsed, _ := gabs.ParseJSON([]byte(defaultSyntax))
 
 		err = process(input, output, jsonParsed)
 		if err != nil {
