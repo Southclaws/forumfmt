@@ -17,6 +17,37 @@ import (
 	"gopkg.in/russross/blackfriday.v2"
 )
 
+var defaultSyntax = `{
+	"tags": {
+		"H1": "[COLOR=\"#FF4700\"][SIZE=\"7\"][B]%s[/B][/SIZE][/COLOR]",
+		"H2": "[COLOR=\"RoyalBlue\"][SIZE=\"6\"][B]%s[/B][/SIZE][/COLOR]",
+		"H3": "[COLOR=\"DeepSkyBlue\"][SIZE=\"5\"][B]%s[/B][/SIZE][/COLOR]",
+		"H4": "[COLOR=\"SlateGray\"][SIZE=\"5\"]%s[/SIZE][/COLOR]"
+	},
+	"keywords": {
+		"if": "[COLOR=\"Blue\"]$0[/COLOR]",
+		"else": "[COLOR=\"Blue\"]$0[/COLOR]",
+		"for": "[COLOR=\"Blue\"]$0[/COLOR]",
+		"new": "[COLOR=\"Blue\"]$0[/COLOR]",
+		"enum": "[COLOR=\"Blue\"]$0[/COLOR]",
+
+		"state": "[COLOR=\"Orange\"]$0[/COLOR]",
+
+		"stock": "[COLOR=\"DeepSkyBlue\"]$0[/COLOR]",
+		"public": "[COLOR=\"DeepSkyBlue\"]$0[/COLOR]",
+		"forward": "[COLOR=\"DeepSkyBlue\"]$0[/COLOR]",
+		"const": "[COLOR=\"DeepSkyBlue\"]$0[/COLOR]",
+		"static": "[COLOR=\"DeepSkyBlue\"]$0[/COLOR]",
+		"hook": "[COLOR=\"Blue\"]$0[/COLOR]"
+	},
+	"numbers": "[COLOR=\"Purple\"]$0[/COLOR]",
+	"directives": "[COLOR=\"Blue\"]$0[/COLOR]",
+	"operators": "[COLOR=\"Red\"]$0[/COLOR]",
+	"strings": "[COLOR=\"Purple\"]$0[/COLOR]",
+	"comment_open": "[COLOR=\"Green\"]",
+	"comment_close": "[/COLOR]"
+}`
+
 func main() {
 	var (
 		input      *os.File
@@ -36,7 +67,6 @@ func main() {
 			fmt.Println("failed to open input file:", err)
 		}
 		outputFile = flag.Arg(1)
-		styler = "southclaws.json"
 	case 3:
 		input, err = os.Open(flag.Arg(0))
 		if err != nil {
@@ -65,9 +95,14 @@ func main() {
 		}()
 	}
 
-	jsonParsed, err := gabs.ParseJSONFile(styler)
-	if err != nil {
-		fmt.Println("failed to process styles:", err)
+	var jsonParsed *gabs.Container
+	if styler == "" {
+		jsonParsed, _ = gabs.ParseJSON([]byte(defaultSyntax))
+	} else {
+		jsonParsed, err = gabs.ParseJSONFile(styler)
+		if err != nil {
+			fmt.Println("failed to process styles:", err)
+		}
 	}
 
 	err = process(input, output, jsonParsed)
