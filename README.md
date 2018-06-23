@@ -78,12 +78,12 @@ You can also specify a style file to use, to determine the forum look, but only
 when all parameters are given:
 
 ```bash
-forumfmt README.md README.bbcode southclaws.json
+forumfmt README.md README.bbcode southclaws
 ```
 
 The available styles are:
 
-* `southclaws.json`
-* `yless.json`
+* `southclaws`
+* `yless`
 
 Feel free to PR more styles if you want, just copy the existing `.json` files.

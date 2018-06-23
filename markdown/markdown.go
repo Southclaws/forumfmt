@@ -55,7 +55,7 @@ func ParseStyles(styler string) (*gabs.Container, error) {
 	if styler == "" {
 		jsonParsed, err = gabs.ParseJSON([]byte(defaultSyntax))
 	} else {
-		jsonParsed, err = gabs.ParseJSONFile(styler)
+		jsonParsed, err = gabs.ParseJSONFile("./" + styler + ".json")
 	}
 	if err != nil {
 		return nil, err

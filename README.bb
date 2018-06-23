@@ -72,14 +72,14 @@ cat README.md | forumfmt > README.bbcode
 You can also specify a style file to use, to determine the forum look, but only when all parameters are given:
 
 [CODE]
-forumfmt README.md README.bbcode southclaws.json
+forumfmt README.md README.bbcode southclaws
 [/CODE]
 
 The available styles are:
 
 [LIST]
-[*][FONT="courier new"]southclaws.json[/FONT]
-[*][FONT="courier new"]yless.json[/FONT]
+[*][FONT="courier new"]southclaws[/FONT]
+[*][FONT="courier new"]yless[/FONT]
 [/LIST]
 
 Feel free to PR more styles if you want, just copy the existing [FONT="courier new"].json[/FONT] files.
