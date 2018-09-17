@@ -8,8 +8,12 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/pmezard/go-difflib/difflib"
+
 	"github.com/Jeffail/gabs"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/Southclaws/forumfmt/markdown"
 )
 
 func Test_process(t *testing.T) {
@@ -36,14 +40,21 @@ func Test_process(t *testing.T) {
 			panic(err)
 		}
 
-		jsonParsed, _ := gabs.ParseJSON([]byte(defaultSyntax))
+		jsonParsed, _ := gabs.ParseJSON([]byte(markdown.DefaultSyntax))
 
-		err = process(input, output, jsonParsed)
+		err = markdown.Process(input, output, jsonParsed)
 		if err != nil {
 			t.Error(err)
 		}
 
-		assert.Equal(t, string(wantOutput), output.String())
+		if string(wantOutput) != output.String() {
+			d, _ := difflib.GetContextDiffString(difflib.ContextDiff{
+				A: strings.Split(string(wantOutput), "\n"),
+				B: strings.Split(output.String(), "\n"),
+			})
+			t.Log(d)
+			t.Fail()
+		}
 	}
 }
 
@@ -58,11 +69,11 @@ func Test_syntax(t *testing.T) {
 	}{
 		{"percent", args{`printf("%s", str);`}, `printf([COLOR="Purple"]"%s"[/COLOR], str);` + "\n"},
 	}
-	jsonParsed, _ := gabs.ParseJSON([]byte(defaultSyntax))
+	jsonParsed, _ := gabs.ParseJSON([]byte(markdown.DefaultSyntax))
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := syntax(tt.args.in, jsonParsed)
+			got := markdown.Syntax(tt.args.in, jsonParsed)
 			assert.Equal(t, tt.want, got)
 		})
 	}

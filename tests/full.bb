@@ -156,7 +156,7 @@ Usage: [FONT="courier new"]sampctl server <subcommand>[/FONT]
 
 For managing servers and runtime configurations.
 
-[COLOR="SlateGray"][SIZE="5"]Subcommands (4)[/SIZE][/COLOR]
+[COLOR="SlateGray"][SIZE="4"]Subcommands (4)[/SIZE][/COLOR]
 
 [COLOR="DeepSkyBlue"][SIZE="5"][B][FONT="courier new"]sampctl server init[/FONT][/B][/SIZE][/COLOR]
 
@@ -164,7 +164,7 @@ Usage: [FONT="courier new"]sampctl server init[/FONT]
 
 Bootstrap a new SA:MP server and generates a [FONT="courier new"]samp.json[/FONT]/[FONT="courier new"]samp.yaml[/FONT] configuration based on user input. If [FONT="courier new"]gamemodes[/FONT], [FONT="courier new"]filterscripts[/FONT] or [FONT="courier new"]plugins[/FONT] directories are present, you will be prompted to select relevant files.
 
-[COLOR="SlateGray"][SIZE="5"]Flags[/SIZE][/COLOR]
+[COLOR="SlateGray"][SIZE="4"]Flags[/SIZE][/COLOR]
 
 [LIST]
 [*][FONT="courier new"]--version value[/FONT]: the SA:MP server version to use (default: “0.3.7”)
@@ -180,7 +180,7 @@ Usage: [FONT="courier new"]sampctl server download[/FONT]
 
 Downloads the files necessary to run a SA:MP server to the current directory (unless [FONT="courier new"]--dir[/FONT] specified). Will download the latest stable (non RC) server version unless [FONT="courier new"]--version[/FONT] is specified.
 
-[COLOR="SlateGray"][SIZE="5"]Flags[/SIZE][/COLOR]
+[COLOR="SlateGray"][SIZE="4"]Flags[/SIZE][/COLOR]
 
 [LIST]
 [*][FONT="courier new"]--version value[/FONT]: the SA:MP server version to use (default: “0.3.7”)
@@ -196,7 +196,7 @@ Usage: [FONT="courier new"]sampctl server ensure[/FONT]
 
 Ensures the server environment is representative of the configuration specified in [FONT="courier new"]samp.json[/FONT]/[FONT="courier new"]samp.yaml[/FONT] - downloads server binaries and plugin files if necessary and generates a [FONT="courier new"]server.cfg[/FONT] file.
 
-[COLOR="SlateGray"][SIZE="5"]Flags[/SIZE][/COLOR]
+[COLOR="SlateGray"][SIZE="4"]Flags[/SIZE][/COLOR]
 
 [LIST]
 [*][FONT="courier new"]--dir value[/FONT]: working directory for the server - by default, uses the current
@@ -210,7 +210,7 @@ Usage: [FONT="courier new"]sampctl server run[/FONT]
 
 Generates a [FONT="courier new"]server.cfg[/FONT] file based on the configuration inside [FONT="courier new"]samp.json[/FONT]/[FONT="courier new"]samp.yaml[/FONT] then executes the server process and automatically restarts it on crashes.
 
-[COLOR="SlateGray"][SIZE="5"]Flags[/SIZE][/COLOR]
+[COLOR="SlateGray"][SIZE="4"]Flags[/SIZE][/COLOR]
 
 [LIST]
 [*][FONT="courier new"]--dir value[/FONT]: working directory for the server - by default, uses the current
@@ -229,7 +229,7 @@ Usage: [FONT="courier new"]sampctl package <subcommand>[/FONT]
 
 For managing Pawn packages such as gamemodes and libraries.
 
-[COLOR="SlateGray"][SIZE="5"]Subcommands (5)[/SIZE][/COLOR]
+[COLOR="SlateGray"][SIZE="4"]Subcommands (5)[/SIZE][/COLOR]
 
 [COLOR="DeepSkyBlue"][SIZE="5"][B][FONT="courier new"]sampctl package init[/FONT][/B][/SIZE][/COLOR]
 
@@ -237,7 +237,7 @@ Usage: [FONT="courier new"]sampctl package init[/FONT]
 
 Helper tool to bootstrap a new package or turn an existing project into a package.
 
-[COLOR="SlateGray"][SIZE="5"]Flags[/SIZE][/COLOR]
+[COLOR="SlateGray"][SIZE="4"]Flags[/SIZE][/COLOR]
 
 [LIST]
 [*][FONT="courier new"]--dir value[/FONT]: working directory for the project - by default, uses the
@@ -250,7 +250,7 @@ Usage: [FONT="courier new"]sampctl package ensure[/FONT]
 
 Ensures dependencies are up to date based on the [FONT="courier new"]dependencies[/FONT] field in [FONT="courier new"]pawn.json[/FONT]/[FONT="courier new"]pawn.yaml[/FONT].
 
-[COLOR="SlateGray"][SIZE="5"]Flags[/SIZE][/COLOR]
+[COLOR="SlateGray"][SIZE="4"]Flags[/SIZE][/COLOR]
 
 [LIST]
 [*][FONT="courier new"]--dir value[/FONT]: working directory for the project - by default, uses the
@@ -263,7 +263,7 @@ Usage: [FONT="courier new"]sampctl package install [package definition][/FONT]
 
 Installs a new package by adding it to the [FONT="courier new"]dependencies[/FONT] field in [FONT="courier new"]pawn.json[/FONT]/[FONT="courier new"]pawn.yaml[/FONT] downloads the contents.
 
-[COLOR="SlateGray"][SIZE="5"]Flags[/SIZE][/COLOR]
+[COLOR="SlateGray"][SIZE="4"]Flags[/SIZE][/COLOR]
 
 [LIST]
 [*][FONT="courier new"]--dir value[/FONT]: working directory for the project - by default, uses the
@@ -276,7 +276,7 @@ Usage: [FONT="courier new"]sampctl package build[/FONT]
 
 Builds a package defined by a [FONT="courier new"]pawn.json[/FONT]/[FONT="courier new"]pawn.yaml[/FONT] file.
 
-[COLOR="SlateGray"][SIZE="5"]Flags[/SIZE][/COLOR]
+[COLOR="SlateGray"][SIZE="4"]Flags[/SIZE][/COLOR]
 
 [LIST]
 [*][FONT="courier new"]--dir value[/FONT]: working directory for the project - by default, uses the
@@ -292,7 +292,7 @@ Usage: [FONT="courier new"]sampctl package run[/FONT]
 
 Compiles and runs a package defined by a [FONT="courier new"]pawn.json[/FONT]/[FONT="courier new"]pawn.yaml[/FONT] file.
 
-[COLOR="SlateGray"][SIZE="5"]Flags[/SIZE][/COLOR]
+[COLOR="SlateGray"][SIZE="4"]Flags[/SIZE][/COLOR]
 
 [LIST]
 [*][FONT="courier new"]--version value[/FONT]: the SA:MP server version to use (default: “0.3.7”)

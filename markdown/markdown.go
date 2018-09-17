@@ -15,7 +15,7 @@ import (
 	"gopkg.in/russross/blackfriday.v2"
 )
 
-var defaultSyntax = `{
+var DefaultSyntax = `{
 	"tags": {
 		"H1": "[COLOR=\"#FF4700\"][SIZE=\"7\"][B]%s[/B][/SIZE][/COLOR]",
 		"H2": "[COLOR=\"RoyalBlue\"][SIZE=\"6\"][B]%s[/B][/SIZE][/COLOR]",
@@ -53,7 +53,7 @@ func ParseStyles(styler string) (*gabs.Container, error) {
 	)
 
 	if styler == "" {
-		jsonParsed, err = gabs.ParseJSON([]byte(defaultSyntax))
+		jsonParsed, err = gabs.ParseJSON([]byte(DefaultSyntax))
 	} else {
 		jsonParsed, err = gabs.ParseJSONFile("./" + styler + ".json")
 	}
@@ -138,7 +138,7 @@ func getText(node *html.Node, jsonParsed *gabs.Container) string {
 						end = "[/PHP]"
 					} else if attrIs(inner, "class", "language-pawn") {
 						begin = `[CODE]` + "\n"
-						text = syntax(strings.TrimSpace(text), jsonParsed)
+						text = Syntax(strings.TrimSpace(text), jsonParsed)
 						end = "[/CODE]"
 					} else {
 						begin = "[CODE]\n"
@@ -215,7 +215,7 @@ func getAttr(node *html.Node, attr string) string {
 	return ""
 }
 
-func syntax(in string, jsonParsed *gabs.Container) string {
+func Syntax(in string, jsonParsed *gabs.Container) string {
 	stringLiteral := regexp.MustCompile(`"[\s\S]*"`)
 	comment := regexp.MustCompile(`//.*`)
 	blockCommentOpen := regexp.MustCompile(`\/\*.*`)
