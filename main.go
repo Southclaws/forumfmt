@@ -22,7 +22,7 @@ var defaultSyntax = `{
 		"H1": "[COLOR=\"#FF4700\"][SIZE=\"7\"][B]%s[/B][/SIZE][/COLOR]",
 		"H2": "[COLOR=\"RoyalBlue\"][SIZE=\"6\"][B]%s[/B][/SIZE][/COLOR]",
 		"H3": "[COLOR=\"DeepSkyBlue\"][SIZE=\"5\"][B]%s[/B][/SIZE][/COLOR]",
-		"H4": "[COLOR=\"SlateGray\"][SIZE=\"5\"]%s[/SIZE][/COLOR]"
+		"H4": "[COLOR=\"SlateGray\"][SIZE=\"4\"]%s[/SIZE][/COLOR]"
 	},
 	"keywords": {
 		"if": "[COLOR=\"Blue\"]$0[/COLOR]",
