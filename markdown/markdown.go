@@ -26,10 +26,24 @@ var DefaultSyntax = `{
 		"if": "[COLOR=\"Blue\"]$0[/COLOR]",
 		"else": "[COLOR=\"Blue\"]$0[/COLOR]",
 		"for": "[COLOR=\"Blue\"]$0[/COLOR]",
+		"foreach": "[COLOR=\"Blue\"]$0[/COLOR]",
+		"while": "[COLOR=\"Blue\"]$0[/COLOR]",
+		"do": "[COLOR=\"Blue\"]$0[/COLOR]",
+		"switch": "[COLOR=\"Blue\"]$0[/COLOR]",
+		"case": "[COLOR=\"Blue\"]$0[/COLOR]",
+		"default": "[COLOR=\"Blue\"]$0[/COLOR]",
 		"new": "[COLOR=\"Blue\"]$0[/COLOR]",
 		"enum": "[COLOR=\"Blue\"]$0[/COLOR]",
+		"return": "[COLOR=\"Blue\"]$0[/COLOR]",
+		"continue": "[COLOR=\"Blue\"]$0[/COLOR]",
+		"break": "[COLOR=\"Blue\"]$0[/COLOR]",
+		"goto": "[COLOR=\"Blue\"]$0[/COLOR]",
+		"char": "[COLOR=\"Blue\"]$0[/COLOR]",
 
 		"state": "[COLOR=\"Orange\"]$0[/COLOR]",
+
+		"true": "[COLOR=\"Purple\"]$0[/COLOR]",
+		"false": "[COLOR=\"Purple\"]$0[/COLOR]",
 
 		"stock": "[COLOR=\"DeepSkyBlue\"]$0[/COLOR]",
 		"public": "[COLOR=\"DeepSkyBlue\"]$0[/COLOR]",
@@ -230,6 +244,8 @@ func Syntax(in string, jsonParsed *gabs.Container) string {
 	//styleOperators := jsonParsed.Path("operators").Data().(string)
 
 	replacements := [][2]string{
+		{`0x(\d|[a-f]|[A-F])+`, styleNumbers},
+		{`0b([0-1])+`, styleNumbers},
 		{`(\+|-)?\d+`, styleNumbers},
 	}
 
