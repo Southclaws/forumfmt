@@ -262,6 +262,9 @@ func Syntax(in string, jsonParsed *gabs.Container) string {
 	processCommon := true
 	inBlockComment := false
 	buf := bytes.Buffer{}
+	var pos []int
+	var firstPart, secondPart string
+
 	for _, line := range strings.Split(in, "\n") {
 		line = stringLiteral.ReplaceAllString(line, styleStrings)
 
@@ -281,9 +284,11 @@ func Syntax(in string, jsonParsed *gabs.Container) string {
 		}
 
 		if processSpecial {
-			if comment.MatchString(line) {
+			pos = comment.FindStringIndex(line)
+
+			if pos != nil {
 				line = comment.ReplaceAllString(line, styleCommentOpen+`$0`+styleCommentClose)
-				processCommon = false
+				processCommon = true
 			} else if directive.MatchString(line) {
 				line = directive.ReplaceAllString(line, styleDirectives)
 				processCommon = false
@@ -293,10 +298,20 @@ func Syntax(in string, jsonParsed *gabs.Container) string {
 		}
 
 		if processCommon {
-			for _, set := range replacements {
-				line = regexp.MustCompile(set[0]).
-					ReplaceAllString(line, set[1])
+			if pos != nil {
+				firstPart = line[:pos[0]]
+				secondPart = line[pos[0]:]
+			} else {
+				firstPart = line
+				secondPart = ""
 			}
+
+			for _, set := range replacements {
+				firstPart = regexp.MustCompile(set[0]).
+					ReplaceAllString(firstPart, set[1])
+			}
+
+			line = firstPart + secondPart
 		}
 
 		tmp := 0
