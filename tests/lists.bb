@@ -1,4 +1,4 @@
-[COLOR="#FF4700"][SIZE="7"][B]lists[/B][/SIZE][/COLOR]
+[COLOR=#FF4700][SIZE=7][B]lists[/B][/SIZE][/COLOR]
 
 [LIST]
 [*]item 1

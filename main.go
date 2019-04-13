@@ -20,6 +20,8 @@ func main() {
 		jsonParsed *gabs.Container
 	)
 
+	forum := flag.String("forum", "default", "-forum <mybb|default>")
+
 	flag.Parse()
 	switch flag.NArg() {
 	case 0:
@@ -58,7 +60,14 @@ func main() {
 		}()
 	}
 
-	jsonParsed, err = markdown.ParseStyles(styler)
+	var tags string
+	if *forum == "mybb" {
+		tags = markdown.TagsMyBB
+	} else {
+		tags = markdown.TagsDefault
+	}
+
+	jsonParsed, err = markdown.ParseStyles(styler, tags)
 	if err != nil {
 		fmt.Println("failed to process styles:", err)
 		return

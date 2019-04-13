@@ -1,4 +1,4 @@
-[COLOR="#FF4700"][SIZE="7"][B]numbered[/B][/SIZE][/COLOR]
+[COLOR=#FF4700][SIZE=7][B]numbered[/B][/SIZE][/COLOR]
 
 [LIST=1]
 [*]first

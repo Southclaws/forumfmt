@@ -67,7 +67,7 @@ func Test_syntax(t *testing.T) {
 		args args
 		want string
 	}{
-		{"percent", args{`printf("%s", str);`}, `printf([COLOR="Purple"]"%s"[/COLOR], str);` + "\n"},
+		{"percent", args{`printf("%s", str);`}, `printf([COLOR=Purple]"%s"[/COLOR], str);` + "\n"},
 	}
 	jsonParsed, _ := gabs.ParseJSON([]byte(markdown.DefaultSyntax))
 
