@@ -31,7 +31,7 @@ becomes this:
 ```json
 The Swiss Army Knife of SA:MP - vital tools for any server owner or library maintainer.
 
-[COLOR="RoyalBlue"][size="6"][B]Overview[/B][/size][/COLOR]
+[COLOR=RoyalBlue][size=6][B]Overview[/B][/size][/COLOR]
 
 Server management and configuration tools:
 
@@ -39,7 +39,7 @@ Server management and configuration tools:
 
 [*]Manage your server settings in JSON format (compiles to server.cfg)
 
-[*]Run the server from [FONT="courier new"]sampctl[/FONT] and let it worry about automatic restarts
+[*]Run the server from [FONT=courier new]sampctl[/FONT] and let it worry about automatic restarts
 
 [*]Automatically download Windows/Linux server binaries when you need them
 

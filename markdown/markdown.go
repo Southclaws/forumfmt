@@ -9,65 +9,74 @@ import (
 	"strings"
 
 	"github.com/Jeffail/gabs"
+	"github.com/russross/blackfriday"
 	"github.com/yhat/scrape"
 	"golang.org/x/net/html"
 	"golang.org/x/net/html/atom"
-	"github.com/russross/blackfriday"
 )
 
-var DefaultSyntax = `{
-	"tags": {
-		"H1": "[COLOR=\"#FF4700\"][SIZE=\"7\"][B]%s[/B][/SIZE][/COLOR]",
-		"H2": "[COLOR=\"RoyalBlue\"][SIZE=\"6\"][B]%s[/B][/SIZE][/COLOR]",
-		"H3": "[COLOR=\"DeepSkyBlue\"][SIZE=\"5\"][B]%s[/B][/SIZE][/COLOR]",
-		"H4": "[COLOR=\"SlateGray\"][SIZE=\"4\"]%s[/SIZE][/COLOR]"
-	},
+var (
+	TagsMyBB = `"tags": {
+		"H1": "[COLOR=#FF4700][SIZE=21][B]%s[/B][/SIZE][/COLOR]",
+		"H2": "[COLOR=RoyalBlue][SIZE=18][B]%s[/B][/SIZE][/COLOR]",
+		"H3": "[COLOR=DeepSkyBlue][SIZE=15][B]%s[/B][/SIZE][/COLOR]",
+		"H4": "[COLOR=SlateGray][SIZE=12]%s[/SIZE][/COLOR]"
+	}`
+	TagsDefault = `"tags": {
+		"H1": "[COLOR=#FF4700][SIZE=7][B]%s[/B][/SIZE][/COLOR]",
+		"H2": "[COLOR=RoyalBlue][SIZE=6][B]%s[/B][/SIZE][/COLOR]",
+		"H3": "[COLOR=DeepSkyBlue][SIZE=5][B]%s[/B][/SIZE][/COLOR]",
+		"H4": "[COLOR=SlateGray][SIZE=4]%s[/SIZE][/COLOR]"
+	}`
+	GeneralSyntax = `{
+	%s,
 	"keywords": {
-		"if": "[COLOR=\"Blue\"]$0[/COLOR]",
-		"else": "[COLOR=\"Blue\"]$0[/COLOR]",
-		"for": "[COLOR=\"Blue\"]$0[/COLOR]",
-		"foreach": "[COLOR=\"Blue\"]$0[/COLOR]",
-		"while": "[COLOR=\"Blue\"]$0[/COLOR]",
-		"do": "[COLOR=\"Blue\"]$0[/COLOR]",
-		"switch": "[COLOR=\"Blue\"]$0[/COLOR]",
-		"case": "[COLOR=\"Blue\"]$0[/COLOR]",
-		"default": "[COLOR=\"Blue\"]$0[/COLOR]",
-		"new": "[COLOR=\"Blue\"]$0[/COLOR]",
-		"enum": "[COLOR=\"Blue\"]$0[/COLOR]",
-		"return": "[COLOR=\"Blue\"]$0[/COLOR]",
-		"continue": "[COLOR=\"Blue\"]$0[/COLOR]",
-		"break": "[COLOR=\"Blue\"]$0[/COLOR]",
-		"goto": "[COLOR=\"Blue\"]$0[/COLOR]",
-		"char": "[COLOR=\"Blue\"]$0[/COLOR]",
+		"if": "[COLOR=Blue]$0[/COLOR]",
+		"else": "[COLOR=Blue]$0[/COLOR]",
+		"for": "[COLOR=Blue]$0[/COLOR]",
+		"foreach": "[COLOR=Blue]$0[/COLOR]",
+		"while": "[COLOR=Blue]$0[/COLOR]",
+		"do": "[COLOR=Blue]$0[/COLOR]",
+		"switch": "[COLOR=Blue]$0[/COLOR]",
+		"case": "[COLOR=Blue]$0[/COLOR]",
+		"default": "[COLOR=Blue]$0[/COLOR]",
+		"new": "[COLOR=Blue]$0[/COLOR]",
+		"enum": "[COLOR=Blue]$0[/COLOR]",
+		"return": "[COLOR=Blue]$0[/COLOR]",
+		"continue": "[COLOR=Blue]$0[/COLOR]",
+		"break": "[COLOR=Blue]$0[/COLOR]",
+		"goto": "[COLOR=Blue]$0[/COLOR]",
+		"char": "[COLOR=Blue]$0[/COLOR]",
 
-		"state": "[COLOR=\"Orange\"]$0[/COLOR]",
+		"state": "[COLOR=Orange]$0[/COLOR]",
 
-		"true": "[COLOR=\"Purple\"]$0[/COLOR]",
-		"false": "[COLOR=\"Purple\"]$0[/COLOR]",
+		"true": "[COLOR=Purple]$0[/COLOR]",
+		"false": "[COLOR=Purple]$0[/COLOR]",
 
-		"stock": "[COLOR=\"DeepSkyBlue\"]$0[/COLOR]",
-		"public": "[COLOR=\"DeepSkyBlue\"]$0[/COLOR]",
-		"forward": "[COLOR=\"DeepSkyBlue\"]$0[/COLOR]",
-		"const": "[COLOR=\"DeepSkyBlue\"]$0[/COLOR]",
-		"static": "[COLOR=\"DeepSkyBlue\"]$0[/COLOR]",
-		"hook": "[COLOR=\"Blue\"]$0[/COLOR]"
+		"stock": "[COLOR=DeepSkyBlue]$0[/COLOR]",
+		"public": "[COLOR=DeepSkyBlue]$0[/COLOR]",
+		"forward": "[COLOR=DeepSkyBlue]$0[/COLOR]",
+		"const": "[COLOR=DeepSkyBlue]$0[/COLOR]",
+		"static": "[COLOR=DeepSkyBlue]$0[/COLOR]",
+		"hook": "[COLOR=Blue]$0[/COLOR]"
 	},
-	"numbers": "[COLOR=\"Purple\"]$0[/COLOR]",
-	"directives": "[COLOR=\"Blue\"]$0[/COLOR]",
-	"operators": "[COLOR=\"Red\"]$0[/COLOR]",
-	"strings": "[COLOR=\"Purple\"]$0[/COLOR]",
-	"comment_open": "[COLOR=\"Green\"]",
+	"numbers": "[COLOR=Purple]$0[/COLOR]",
+	"directives": "[COLOR=Blue]$0[/COLOR]",
+	"operators": "[COLOR=Red]$0[/COLOR]",
+	"strings": "[COLOR=Purple]$0[/COLOR]",
+	"comment_open": "[COLOR=Green]",
 	"comment_close": "[/COLOR]"
 }`
+)
 
-func ParseStyles(styler string) (*gabs.Container, error) {
+func ParseStyles(styler, tags string) (*gabs.Container, error) {
 	var (
 		jsonParsed *gabs.Container
 		err        error
 	)
 
 	if styler == "" {
-		jsonParsed, err = gabs.ParseJSON([]byte(DefaultSyntax))
+		jsonParsed, err = gabs.ParseJSON([]byte(fmt.Sprintf(GeneralSyntax, tags)))
 	} else {
 		jsonParsed, err = gabs.ParseJSONFile("./" + styler + ".json")
 	}
@@ -159,7 +168,7 @@ func getText(node *html.Node, jsonParsed *gabs.Container) string {
 						end = "[/CODE]"
 					}
 				} else {
-					begin = `[FONT="courier new"]`
+					begin = `[FONT=courier new]`
 					end = `[/FONT]`
 				}
 			} else if inner.Data == "em" {
@@ -174,7 +183,7 @@ func getText(node *html.Node, jsonParsed *gabs.Container) string {
 			} else if inner.Data == "a" {
 				href := getAttr(inner, "href")
 				if href != "" {
-					begin = fmt.Sprintf(`[URL="%s"]`, href)
+					begin = fmt.Sprintf(`[URL=%s]`, href)
 					end = "[/URL]"
 				}
 			} else if inner.Data == "img" {
@@ -190,8 +199,8 @@ func getText(node *html.Node, jsonParsed *gabs.Container) string {
 				begin = "[LIST]"
 				end = "[/LIST]"
 			} else {
-				begin = "[UNHANDLED-TAG=" + inner.Data + "]"
-				end = "[/UNHANDLED-TAG=" + inner.Data + "]"
+				begin = "[UNHANDLED-TAG= + inner.Data + ]"
+				end = "[/UNHANDLED-TAG= + inner.Data + ]"
 			}
 
 			buf.WriteString(begin)

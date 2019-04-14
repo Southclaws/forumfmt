@@ -1,10 +1,10 @@
-[COLOR="#FF4700"][SIZE="7"][B]forumfmt[/B][/SIZE][/COLOR]
+[COLOR=#FF4700][SIZE=7][B]forumfmt[/B][/SIZE][/COLOR]
 
-[URL="https://github.com/Southclaws/forumfmt"][IMG]https://img.shields.io/badge/star_on-GitHub-lightgrey.svg[/IMG][/URL]
+[URL=https://github.com/Southclaws/forumfmt][IMG]https://img.shields.io/badge/star_on-GitHub-lightgrey.svg[/IMG][/URL]
 
 Maintaining documentation is already difficult, maintaining it on two different platforms in two different formats is just annoying.
 
-[COLOR="RoyalBlue"][SIZE="6"][B]Overview[/B][/SIZE][/COLOR]
+[COLOR=RoyalBlue][SIZE=6][B]Overview[/B][/SIZE][/COLOR]
 
 This tool means you can simply have a single markdown readme file in your project’s repo and when you post it to the forums or update the topic, all you need to do is simply run this tool over the markdown text to generate BBCode.
 
@@ -28,7 +28,7 @@ becomes this:
 [PHP]
 The Swiss Army Knife of SA:MP - vital tools for any server owner or library maintainer.
 
-[COLOR="RoyalBlue"][size="6"][B]Overview[/B][/size][/COLOR]
+[COLOR=RoyalBlue][size=6][B]Overview[/B][/size][/COLOR]
 
 Server management and configuration tools:
 
@@ -36,7 +36,7 @@ Server management and configuration tools:
 
 [*]Manage your server settings in JSON format (compiles to server.cfg)
 
-[*]Run the server from [FONT="courier new"]sampctl[/FONT] and let it worry about automatic restarts
+[*]Run the server from [FONT=courier new]sampctl[/FONT] and let it worry about automatic restarts
 
 [*]Automatically download Windows/Linux server binaries when you need them
 
@@ -45,17 +45,17 @@ Server management and configuration tools:
 
 And, as you can probably guess by now, this topic was generated using the tool!
 
-[COLOR="RoyalBlue"][SIZE="6"][B]Installation[/B][/SIZE][/COLOR]
+[COLOR=RoyalBlue][SIZE=6][B]Installation[/B][/SIZE][/COLOR]
 
-The app is a simple Go app so just [FONT="courier new"]go get[/FONT] it:
+The app is a simple Go app so just [FONT=courier new]go get[/FONT] it:
 
 [CODE]
 go get github.com/Southclaws/forumfmt
 [/CODE]
 
-If you don’t have Go installed, there are precompiled binaries available [URL="https://github.com/Southclaws/forumfmt/releases"]on the releases page[/URL].
+If you don’t have Go installed, there are precompiled binaries available [URL=https://github.com/Southclaws/forumfmt/releases]on the releases page[/URL].
 
-[COLOR="RoyalBlue"][SIZE="6"][B]Usage[/B][/SIZE][/COLOR]
+[COLOR=RoyalBlue][SIZE=6][B]Usage[/B][/SIZE][/COLOR]
 
 Then you can use the command, either by passing input and output files as an argument:
 
@@ -78,9 +78,9 @@ forumfmt README.md README.bbcode southclaws
 The available styles are:
 
 [LIST]
-[*][FONT="courier new"]southclaws[/FONT]
-[*][FONT="courier new"]yless[/FONT]
+[*][FONT=courier new]southclaws[/FONT]
+[*][FONT=courier new]yless[/FONT]
 [/LIST]
 
-Feel free to PR more styles if you want, just copy the existing [FONT="courier new"].json[/FONT] files.
+Feel free to PR more styles if you want, just copy the existing [FONT=courier new].json[/FONT] files.
 
